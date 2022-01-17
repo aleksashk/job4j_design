@@ -19,32 +19,46 @@ public class Generics {
         gen.printObject(third);
         System.out.println();
 
-        gen.printBoundedWildCard(first);
+         /**
+         * Метод пытается вывести на экран коллекцию с Animal,
+         * но в методе printBoundedWildCard() входящий параметр
+         * ограничен сверху классом Predator, и класс Animal уже не
+         * подходит
+         * gen.printBoundedWildCard(first);
+         */
         gen.printBoundedWildCard(second);
-//        gen.printBoundedWildCard(third);
+        gen.printBoundedWildCard(third);
+
         System.out.println();
 
-//        gen.printLowerBoundedWildCard(first);
+
+        gen.printLowerBoundedWildCard(first);
         gen.printLowerBoundedWildCard(second);
-        gen.printLowerBoundedWildCard(third);
+        /**
+         * Метод пытается вывести на экран коллекцию с Tiger,
+         * но в методе printLowerBoundedWildCard() входящий параметр
+         * ограничен снизу классом Predator, и класс Tiger уже не
+         * подходит
+         * gen.printLowerBoundedWildCard(third);
+         */
     }
 
     public void printObject(List<?> list) {
-        for (Iterator<?> it = list.iterator(); it.hasNext();) {
+        for (Iterator<?> it = list.iterator(); it.hasNext(); ) {
             Object next = it.next();
             System.out.println("Текущий элемент: " + next);
         }
     }
 
-    public void printBoundedWildCard(List<? super Predator> list) {
-        for (Iterator<? super Predator> it = list.iterator(); it.hasNext();) {
+    public void printBoundedWildCard(List<? extends Predator> list) {
+        for (Iterator<? extends Predator> it = list.iterator(); it.hasNext(); ) {
             Object next = it.next();
             System.out.println("Текущий элемент: " + next);
         }
     }
 
-    public void printLowerBoundedWildCard(List<? extends Predator> list) {
-        for (Iterator<? extends Predator> it = list.iterator(); it.hasNext();) {
+    public void printLowerBoundedWildCard(List<? super Predator> list) {
+        for (Iterator<? super Predator> it = list.iterator(); it.hasNext(); ) {
             Object next = it.next();
             System.out.println("Текущий элемент: " + next);
         }
