@@ -20,7 +20,7 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public void add(T value) {
-        if(size == container.length){
+        if (size == container.length) {
             container = Arrays.copyOf(container, container.length * 2);
         } else {
             container[size++] = value;
@@ -48,8 +48,9 @@ public class SimpleArrayList<T> implements List<T> {
         checkIndex(index);
         T temp = container[index];
         final int newSize;
-        if ((newSize = size - 1) > index)
-        System.arraycopy(container, index + 1, container, index, newSize - index);
+        if ((newSize = size - 1) > index) {
+            System.arraycopy(container, index + 1, container, index, newSize - index);
+        }
         container[size = newSize] = null;
         modCount++;
         return temp;
