@@ -47,11 +47,12 @@ public class SimpleArrayList<T> implements List<T> {
     public T remove(int index) {
         checkIndex(index);
         T temp = container[index];
-        final int newSize;
-        if ((newSize = size - 1) > index) {
+        final int newSize = size - 1;
+        if (newSize > index) {
             System.arraycopy(container, index + 1, container, index, newSize - index);
         }
-        container[size = newSize] = null;
+        size = newSize;
+        container[size] = null;
         modCount++;
         return temp;
     }
