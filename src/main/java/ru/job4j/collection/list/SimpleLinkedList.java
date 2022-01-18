@@ -56,6 +56,7 @@ public class SimpleLinkedList<E> implements List<E> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
+
                 E value = position.getValue();
                 position = position.nextRef;
                 return value;
