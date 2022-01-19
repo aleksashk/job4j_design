@@ -20,7 +20,7 @@ public class SimpleArrayList<T> implements List<T> {
         }
     }
 
-    public SimpleArrayList() {}
+    public SimpleArrayList() { }
 
     private void increaseSize() {
         if (size == 0) {
