@@ -23,11 +23,10 @@ public class ListUtils {
         Objects.checkIndex(index, list.size());
         ListIterator<T> iterator = list.listIterator();
         while (iterator.hasNext()) {
+            iterator.next();
             if (iterator.previousIndex() == index) {
                 iterator.add(value);
-                break;
             }
-            iterator.next();
         }
     }
 
@@ -37,7 +36,6 @@ public class ListUtils {
             T value = iterator.next();
             if (filter.test(value)) {
                 iterator.remove();
-                break;
             }
         }
     }
@@ -48,7 +46,6 @@ public class ListUtils {
             T item = iterator.next();
             if (filter.test(item)) {
                 iterator.set(value);
-                break;
             }
         }
     }
