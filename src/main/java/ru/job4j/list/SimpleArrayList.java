@@ -7,14 +7,10 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SimpleArrayList<T> implements List<T> {
-    private static final int CAPACITY = 10;
+    private static final int DEFAULTCAPACITY = 10;
     private T[] container;
     private int size;
     private int modCount;
-
-    public SimpleArrayList() {
-        this(CAPACITY);
-    }
 
     public SimpleArrayList(int capacity) {
         if (capacity > 0) {
@@ -24,7 +20,12 @@ public class SimpleArrayList<T> implements List<T> {
         }
     }
 
+    public SimpleArrayList() {}
+
     private void increaseSize() {
+        if (size == 0) {
+            container = (T[]) new Object[DEFAULTCAPACITY];
+        }
         if (size == container.length) {
             container = Arrays.copyOf(container, container.length * 2);
         }
