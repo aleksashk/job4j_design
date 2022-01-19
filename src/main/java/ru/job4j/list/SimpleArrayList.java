@@ -7,15 +7,21 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SimpleArrayList<T> implements List<T> {
-
+    private static final int CAPACITY = 10;
     private T[] container;
-
     private int size;
-
     private int modCount;
 
+    public SimpleArrayList() {
+        this(CAPACITY);
+    }
+
     public SimpleArrayList(int capacity) {
-        this.container = (T[]) new Object[capacity];
+        if (capacity > 0) {
+            this.container = (T[]) new Object[capacity];
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     private void increaseSize() {
@@ -33,8 +39,7 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public T set(int index, T newValue) {
-        Objects.checkIndex(index, size);
-        T temp = container[index];
+        T temp = get(index);
         container[index] = newValue;
         modCount++;
         return temp;
@@ -42,8 +47,7 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        Objects.checkIndex(index, size);
-        T temp = container[index];
+        T temp = get(index);
         final int newSize = size - 1;
         if (newSize > index) {
             System.arraycopy(container, index + 1, container, index, newSize - index);
@@ -73,6 +77,9 @@ public class SimpleArrayList<T> implements List<T> {
 
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return position < size;
             }
 
@@ -80,9 +87,6 @@ public class SimpleArrayList<T> implements List<T> {
             public T next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
                 }
                 return container[position++];
             }
