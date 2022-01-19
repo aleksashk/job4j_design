@@ -13,7 +13,7 @@ public class SimpleArrayList<T> implements List<T> {
     private int modCount;
 
     public SimpleArrayList(int capacity) {
-        if (capacity > 0) {
+        if (capacity >= 0) {
             this.container = (T[]) new Object[capacity];
         } else {
             throw new IllegalArgumentException();
