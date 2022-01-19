@@ -14,8 +14,11 @@ public class User {
     private Calendar birthday;
 
     @Override
-    public int hashCode() {
-        return hash(name, children, birthday);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return children == user.children && Objects.equals(name, user.name) && Objects.equals(birthday, user.birthday);
     }
 
     public User(String name, int children, Calendar birthday) {
@@ -23,8 +26,6 @@ public class User {
         this.children = children;
         this.birthday = birthday;
     }
-
-
 
     public static void main(String[] args) {
         GregorianCalendar calendar = new GregorianCalendar(1984, Calendar.MAY, 24);
