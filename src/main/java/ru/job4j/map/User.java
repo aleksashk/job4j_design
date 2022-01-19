@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.util.Objects.hash;
 
@@ -18,16 +19,27 @@ public class User {
         this.birthday = birthday;
     }
 
+    @Override
+    public int hashCode() {
+        return hash(name, children, birthday);
+    }
+
     public static void main(String[] args) {
-        User user1 = new User("Alex", 2, new GregorianCalendar(1984, Calendar.MAY, 2));
-        User user2 = new User("Alex", 2, new GregorianCalendar(1984, Calendar.MAY, 2));
+        GregorianCalendar calendar = new GregorianCalendar(1984, Calendar.MAY , 24);
+        calendar.set(Calendar.HOUR, 4);
+        calendar.set(Calendar.MINUTE, 37);
+        calendar.set(Calendar.SECOND, 9);
+        calendar.set(Calendar.MILLISECOND, 45);
+
+        User user1 = new User("Alex", 2, calendar);
+        User user2 = new User("Alex", 2, calendar);
 
         Map<User, Object> map = new HashMap<>();
         map.put(user1, new Object());
         map.put(user2, new Object());
 
         for (Map.Entry<User, Object> e : map.entrySet()) {
-            System.out.println(e.getKey() + " -> " + e.getValue() + " ---> " + e.hashCode() + " --->" + hash(e.hashCode()) + " ---> " + hash(e.hashCode()) % 15 + ";");
+            System.out.println(e.getKey() + " -> " + e.getValue() + " ---> " + e.hashCode() + " --->" +  hash(e.hashCode()) % 15 + ";");
         }
     }
 }
