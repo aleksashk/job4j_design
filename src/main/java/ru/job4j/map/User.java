@@ -19,11 +19,6 @@ public class User {
         this.birthday = birthday;
     }
 
-    @Override
-    public int hashCode() {
-        return hash(name, children, birthday);
-    }
-
     public static void main(String[] args) {
         GregorianCalendar calendar = new GregorianCalendar(1984, Calendar.MAY , 24);
         calendar.set(Calendar.HOUR, 4);
@@ -39,7 +34,7 @@ public class User {
         map.put(user2, new Object());
 
         for (Map.Entry<User, Object> e : map.entrySet()) {
-            System.out.println(e.getKey() + " -> " + e.getValue() + " ---> " + e.hashCode() + " --->" +  hash(e.hashCode()) % 15 + ";");
+            System.out.println(e.getKey() + " -> " + e.getValue() + " ---> " + e.getKey().hashCode() + " --->" +  hash(e.getKey().hashCode()) % 15 + ";");
         }
     }
 }
