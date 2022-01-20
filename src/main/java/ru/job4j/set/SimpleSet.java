@@ -21,13 +21,13 @@ public class SimpleSet<T> implements Set<T> {
 
     @Override
     public boolean contains(T value) {
-        boolean result = true;
+        boolean result = false;
         for (T item : set) {
             if (Objects.equals(value, item)) {
-                return result;
+                result = true;
+                break;
             }
         }
-        result = false;
         return result;
     }
 
