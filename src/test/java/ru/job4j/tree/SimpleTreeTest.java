@@ -67,7 +67,7 @@ public class SimpleTreeTest {
     @Test
     public void whenNotAdd() {
         Tree<Integer> tree = new SimpleTree<>(14);
-        assertFalse(tree.add(12,7));
+        assertFalse(tree.add(12, 7));
     }
 
 }
