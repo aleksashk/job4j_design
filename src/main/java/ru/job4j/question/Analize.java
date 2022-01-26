@@ -1,54 +1,35 @@
 package ru.job4j.question;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class Analize {
 
     public static Info diff(Set<User> previous, Set<User> current) {
-        int counterAddedUsers = 0;
-        if (previous.size() < current.size()) {
-            counterAddedUsers = current.size() - previous.size();
-        }
-        if (previous.size() == current.size()) {
-            Set<Integer> userPrevId = new HashSet<>();
-            for (User u : previous) {
-                userPrevId.add(u.getId());
-            }
-            for (User u : current) {
-                if (!userPrevId.contains(u.getId())) {
-                    counterAddedUsers++;
-                }
-            }
-        }
-
+        int counterAddedUsers;
         int counterChangedUsers = 0;
-        if (previous.size() == current.size()) {
-            for (User uPrev : previous) {
-                int userIdPrev = uPrev.getId();
-                String userNamePrev = uPrev.getName();
+        int counterRemovedUser = 0;
 
-                for (User uCur : current) {
-                    int userIdCur = uCur.getId();
-                    String userNameCur = uCur.getName();
+        Map<Integer, String> currentMap = new HashMap<>();
+        for (User user : current) {
+            currentMap.put(user.getId(), user.getName());
+        }
 
-                    if (userIdPrev == userIdCur && !userNamePrev.equals(userNameCur)) {
-                        counterChangedUsers++;
-                        break;
-                    }
-                }
+        for (User user : previous) {
+            String curUserName = currentMap.get(user.getId());
+            if (curUserName != null && curUserName.equals(user.getName())) {
+                currentMap.remove(user.getId());
+            }
+            if (curUserName != null && !curUserName.equals(user.getName())) {
+                currentMap.remove(user.getId());
+                counterChangedUsers++;
+            }
+            if (curUserName == null) {
+                counterRemovedUser++;
             }
         }
-
-        int counterRemovedUser = 0;
-        if (previous.size() > current.size()) {
-            counterRemovedUser = previous.size() - current.size();
-        }
-        if (previous.size() == current.size()) {
-           Set<User> resultRemovedSet = new HashSet<>(previous);
-           resultRemovedSet.removeAll(current);
-           counterRemovedUser = resultRemovedSet.size();
-        }
+        counterAddedUsers = currentMap.size();
 
         return new Info(counterAddedUsers, counterChangedUsers, counterRemovedUser);
     }
