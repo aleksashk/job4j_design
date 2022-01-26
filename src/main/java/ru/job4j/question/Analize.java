@@ -52,5 +52,4 @@ public class Analize {
 
         return new Info(counterAddedUsers, counterChangedUsers, counterRemovedUser);
     }
-
 }
