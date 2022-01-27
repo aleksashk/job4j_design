@@ -3,6 +3,7 @@ package ru.job4j.io;
 import java.io.FileOutputStream;
 
 public class ResultFile {
+
     public static void main(String[] args) {
         try (FileOutputStream out = new FileOutputStream("result.txt")) {
             out.write("2 * 1 = 2\t\t3 * 1 = 3\t\t4 * 1 = 4\t\t5 * 1 = 5".getBytes());
