@@ -30,4 +30,25 @@ public class ConfigTest {
         Config config = new Config(path);
         config.load();
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenPairWithoutSecondValue() {
+        String path = "./data/pair_without_second_value.properties";
+        Config config = new Config(path);
+        config.load();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenPairWithoutSignEquals() {
+        String path = "./data/pair_without_sign_equals.properties";
+        Config config = new Config(path);
+        config.load();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenPairWithSignEqualsMoreThenOne() {
+        String path = "./data/pair_with_sign_equals_more_then_one.properties";
+        Config config = new Config(path);
+        config.load();
+    }
 }

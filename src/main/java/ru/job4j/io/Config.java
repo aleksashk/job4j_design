@@ -22,10 +22,10 @@ public class Config {
             while ((line = reader.readLine()) != null) {
                 if (!line.startsWith("#") && line.length() > 1) {
                     String[] strings = line.split("=");
-                    String key = strings[0];
-                    if (key.isEmpty()) {
+                    if (strings[0].isEmpty() || strings[0].startsWith("=") || strings.length != 2 || strings[1].startsWith("=")) {
                         throw new IllegalArgumentException();
                     }
+                    String key = strings[0];
                     String value = strings[1];
                     values.put(key, value);
                 }
