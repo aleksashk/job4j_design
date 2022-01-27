@@ -27,10 +27,10 @@ public class Config {
                         throw new IllegalArgumentException();
                     }
                     String value = strings[1];
-                    values.put(key,value);
+                    values.put(key, value);
                 }
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
