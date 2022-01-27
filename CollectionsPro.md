@@ -130,15 +130,15 @@ Collection<? extends Object>, а значит - коллекция может с
 Одним из способов получить тип данных, который был передан в замен обобщенного класса - прочитать имя созданного 
 производного класса:
 
-class Get<T> {
-    T ob;
-    Gen (T o) {
-        ob = o;
+    class Get<T> {
+        T ob;
+        Gen (T o) {
+            ob = o;
+        }
+        void showType() {
+            System.out.println("Типом Т является " + ob.getClass().getName());
+        }     
     }
-    void showType() {
-        System.out.println("Типом Т является " + ob.getClass().getName());
-    }     
-}
 
 
 [к оглавлению](#Collections-Pro)
