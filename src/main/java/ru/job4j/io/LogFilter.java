@@ -10,15 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogFilter {
-    public static List<String> filter(String file) {
+    public List<String> filter(String file) {
         List<String> list = new ArrayList<>();
-        String query = "404";
-        int queryPosition = -2;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] strings = line.split(" ");
-                if (strings[strings.length + queryPosition].equals(query)) {
+                if ("404".equals(strings[strings.length -2])) {
                     list.add(line);
                 }
             }
@@ -28,7 +26,7 @@ public class LogFilter {
         return list;
     }
 
-    public static void save(List<String> log, String file) {
+    public void save(List<String> log, String file) {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)))) {
             for (String s : log) {
                 writer.write(s);
@@ -40,9 +38,10 @@ public class LogFilter {
     }
 
     public static void main(String[] args) {
+        LogFilter logFilter = new LogFilter();
         String resultLogs = "resultLogs.txt";
-        List<String> log = filter("log.txt");
+        List<String> log = logFilter.filter("log.txt");
         System.out.println(log);
-        save(log, resultLogs);
+        logFilter.save(log, resultLogs);
     }
 }
