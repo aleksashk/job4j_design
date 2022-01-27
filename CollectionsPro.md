@@ -131,14 +131,23 @@ Collection<? extends Object>, а значит - коллекция может с
 производного класса:
 
 class Get<T> {
+
     T ob;
+
     Gen (T o) {
+
         ob = o;
+
     }
+
     void showType() {
+
         System.out.println("Типом Т является " + ob.getClass().getName());
+
     }     
+
 }
+
 
 [к оглавлению](#Collections-Pro)
 
