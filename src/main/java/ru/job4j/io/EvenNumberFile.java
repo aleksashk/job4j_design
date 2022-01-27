@@ -9,7 +9,7 @@ public class EvenNumberFile {
             StringBuilder sb = new StringBuilder();
             int read;
             while ((read = fis.read()) != -1) {
-                sb.append((char)read);
+                sb.append((char) read);
             }
             String[] numbers = sb.toString().split(System.lineSeparator());
             for (String str : numbers) {
