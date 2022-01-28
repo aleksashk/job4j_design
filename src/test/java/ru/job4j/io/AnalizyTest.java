@@ -31,20 +31,25 @@ public class AnalizyTest {
             writer.println("400 11:01:02");
             writer.println("200 11:02:02");
             writer.println("200 11:03:02");
+            writer.println("500 13:01:02");
+            writer.println("400 14:02:02");
+            writer.println("200 15:03:02");
         }
 
         String expected;
-        expected = "10:57:01" + ";" + "11:02:02";
+        expected = "10:57:01" + ";" + "11:02:02" + System.lineSeparator() + "13:01:02" + ";" + "15:03:02" + System.lineSeparator();
         Analizy analizy = new Analizy();
         analizy.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
-        String actual = "";
+        String actual;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(target))) {
+            StringBuilder sb= new StringBuilder();
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null && !line.isEmpty()) {
                 System.out.println(line);
-                actual = line;
+                sb.append(line).append(System.lineSeparator());
             }
+            actual = sb.toString();
         }
         assertEquals(expected, actual);
     }
