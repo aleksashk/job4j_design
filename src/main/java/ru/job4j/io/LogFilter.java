@@ -43,4 +43,5 @@ public class LogFilter {
         System.out.println(log);
         logFilter.save(log, resultLogs);
     }
+
 }
