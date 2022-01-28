@@ -5,11 +5,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.StringJoiner;
 
 public class Analizy {
     public void unavailable(String source, String target) {
-        String rslString = "";
+        String rslString;
         try (BufferedReader reader = new BufferedReader(new FileReader(source));
              PrintWriter writer = new PrintWriter(new FileWriter(target))) {
             String[] startTimeBreakPosition = new String[2];
@@ -25,9 +24,9 @@ public class Analizy {
                     isAsleep = false;
                     endTimeBreakPosition = input.split(" ");
                     rslString = startTimeBreakPosition[1] + ";" + endTimeBreakPosition[1] + System.lineSeparator();
+                    writer.write(rslString);
                 }
                 input = reader.readLine();
-                writer.write(rslString);
             }
         } catch (IOException e) {
             e.printStackTrace();
