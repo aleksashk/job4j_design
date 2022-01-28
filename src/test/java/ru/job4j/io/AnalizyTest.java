@@ -43,11 +43,12 @@ public class AnalizyTest {
         String actual;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(target))) {
-            StringBuilder sb= new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null && !line.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            String line = reader.readLine();
+            while (line != null && !line.isEmpty()) {
                 System.out.println(line);
                 sb.append(line).append(System.lineSeparator());
+                line = reader.readLine();
             }
             actual = sb.toString();
         }
