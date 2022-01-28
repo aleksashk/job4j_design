@@ -30,6 +30,7 @@ public class AnalizyTest {
             writer.println("500 10:59:01");
             writer.println("400 11:01:02");
             writer.println("200 11:02:02");
+            writer.println("200 11:03:02");
         }
 
         String expected;
