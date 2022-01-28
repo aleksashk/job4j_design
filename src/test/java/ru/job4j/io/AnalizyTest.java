@@ -1,5 +1,6 @@
 package ru.job4j.io;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -24,15 +25,15 @@ public class AnalizyTest {
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(source))) {
             writer.println("200 10:56:01");
-            writer.println("200 10:56:01");
             writer.println("500 10:57:01");
             writer.println("400 10:58:01");
-            writer.println("200 10:59:01");
-            writer.println("500 11:01:02");
+            writer.println("500 10:59:01");
+            writer.println("400 11:01:02");
             writer.println("200 11:02:02");
         }
+
         StringBuilder expected = new StringBuilder();
-        expected.append("10:57:01").append(";").append("10:59:01").append("\n").append("11:01:02").append(";").append("11:02:02");
+        expected.append("10:57:01").append(";").append("11:02:02");
         Analizy analizy = new Analizy();
         analizy.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
         StringBuilder actual = new StringBuilder();
@@ -46,5 +47,4 @@ public class AnalizyTest {
         }
         assertEquals(expected, actual);
     }
-
 }

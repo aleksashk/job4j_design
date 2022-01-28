@@ -24,7 +24,7 @@ public class Analizy {
                 if (isAsleep && (input.startsWith("200") || input.startsWith("300"))) {
                     isAsleep = false;
                     endTimeBreakPosition = input.split(" ");
-                    rslString.add(startTimeBreakPosition[1] + ";" + endTimeBreakPosition[1] + System.lineSeparator());
+                    rslString.add(startTimeBreakPosition[1] + ";" + endTimeBreakPosition[1]);
                 }
                 input = reader.readLine();
                 writer.write(rslString.toString());
