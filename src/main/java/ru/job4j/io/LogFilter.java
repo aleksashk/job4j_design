@@ -40,7 +40,9 @@ public class LogFilter {
         LogFilter logFilter = new LogFilter();
         String resultLogs = "resultLogs.txt";
         List<String> log = logFilter.filter("log.txt");
-        System.out.println(log);
+        for (String s : log) {
+            System.out.println(s);
+        }
         logFilter.save(log, resultLogs);
     }
 
