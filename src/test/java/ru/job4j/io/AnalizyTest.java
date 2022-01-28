@@ -32,17 +32,17 @@ public class AnalizyTest {
             writer.println("200 11:02:02");
         }
 
-        StringBuilder expected = new StringBuilder();
-        expected.append("10:57:01").append(";").append("11:02:02");
+        String expected;
+        expected = "10:57:01" + ";" + "11:02:02";
         Analizy analizy = new Analizy();
         analizy.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
-        StringBuilder actual = new StringBuilder();
+        String actual = "";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(target))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
-                actual.append(line);
+                actual = line;
             }
         }
         assertEquals(expected, actual);

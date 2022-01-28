@@ -9,7 +9,7 @@ import java.util.StringJoiner;
 
 public class Analizy {
     public void unavailable(String source, String target) {
-        StringJoiner rslString = new StringJoiner(System.lineSeparator());
+        String rslString = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(source));
              PrintWriter writer = new PrintWriter(new FileWriter(target))) {
             String[] startTimeBreakPosition = new String[2];
@@ -24,10 +24,10 @@ public class Analizy {
                 if (isAsleep && (input.startsWith("200") || input.startsWith("300"))) {
                     isAsleep = false;
                     endTimeBreakPosition = input.split(" ");
-                    rslString.add(startTimeBreakPosition[1] + ";" + endTimeBreakPosition[1]);
+                    rslString = startTimeBreakPosition[1] + ";" + endTimeBreakPosition[1] + System.lineSeparator();
                 }
                 input = reader.readLine();
-                writer.write(rslString.toString());
+                writer.write(rslString);
             }
         } catch (IOException e) {
             e.printStackTrace();
