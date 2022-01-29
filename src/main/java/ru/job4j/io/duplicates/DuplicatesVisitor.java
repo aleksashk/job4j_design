@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
-    private Map<FileProperty, String> duplicatesMap;
+    private Map<FileProperty, List<Path>> duplicatesMap;
 
     public DuplicatesVisitor() {
         this.duplicatesMap = new HashMap<>();
@@ -18,18 +18,20 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-        FileProperty fileProperty = new FileProperty(file.toFile().length(), file.getFileName().toString());
-        duplicatesMap.put(fileProperty, file.toAbsolutePath().toString());
+        FileProperty fileProperty = new FileProperty(file.toFile().length(), file.toFile().getName());
+        if (!duplicatesMap.containsKey(fileProperty)) {
+            duplicatesMap.put(fileProperty, new ArrayList<>());
+        }
+        duplicatesMap.get(fileProperty).add(file.toAbsolutePath());
         return FileVisitResult.CONTINUE;
     }
 
     public void showDuplicates() {
-        for (Map.Entry<FileProperty, String> entry : duplicatesMap.entrySet()) {
-            List<String> values = new ArrayList<>(List.of(entry.getValue()));
-            if (values.size() > 1) {
-                System.out.println("file: " + entry.getKey() + " found in: ");
-                for (String str : values) {
-                    System.out.println("\t" + str);
+        for (Map.Entry<FileProperty, List<Path>> entry : duplicatesMap.entrySet()) {
+            if (entry.getValue().size() > 1) {
+                System.out.println("file [" + entry.getKey().getName() + "] found in: ");
+                for (Path path : entry.getValue()) {
+                    System.out.println("\t" + path.toAbsolutePath());
                 }
             }
         }
