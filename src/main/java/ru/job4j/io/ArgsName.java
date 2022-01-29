@@ -12,18 +12,36 @@ public class ArgsName {
     }
 
     private void parse(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException();
-        }
+
+        isEmptyArgs(args.length);
+
         for (String str : args) {
-            if (!str.contains("=")) {
-                throw new IllegalArgumentException();
-            }
+
+            isContainsEquals(str);
+
             int firstInd = str.indexOf("=");
-            if (str.substring(firstInd + 1).length() == 0) {
-                throw new IllegalArgumentException();
-            }
+
+            isParameterHasValue(str, firstInd);
+
             values.put(str.substring(1, firstInd), str.substring(firstInd + 1));
+        }
+    }
+
+    private void isParameterHasValue(String str, int firstInd) {
+        if (str.substring(firstInd + 1).length() == 0) {
+            throw new IllegalArgumentException("Value is empty");
+        }
+    }
+
+    private void isContainsEquals(String str) {
+        if (!str.contains("=")) {
+            throw new IllegalArgumentException("Every parameter should have sign equals");
+        }
+    }
+
+    private void isEmptyArgs(int lengthArgs) {
+        if (lengthArgs == 0) {
+            throw new IllegalArgumentException("Parameters didn't find");
         }
     }
 
