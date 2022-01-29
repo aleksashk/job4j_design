@@ -13,6 +13,9 @@ public class Search {
             throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER TYPE_OF_FILE.");
         }
         Path start = Paths.get(args[0]);
+        if (!start.toFile().isDirectory() || !start.toFile().exists()) {
+            throw new IllegalArgumentException("Please check your first parameter: is it exists and is it folder");
+        }
         search(start, p -> p.toFile().getName().endsWith(args[1])).forEach(System.out::println);
     }
 
