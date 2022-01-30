@@ -1,0 +1,11 @@
+YOU: Hello
+PC: Take care.
+PC: No way!
+PC: How are you?
+PC: She is nice)
+YOU: hi
+YOU: eee
+YOU: ???
+YOU: продолжить
+PC: No way!
+PC: I'm busy...
