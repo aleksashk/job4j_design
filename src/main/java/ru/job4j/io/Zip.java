@@ -39,35 +39,40 @@ public class Zip {
     }
 
     public static void main(String[] args) throws IOException {
-        isValidNumberOfArgs(args);
-        ArgsName.of(args);
 
         packSingleFile(
                 new File("./pom.xml"),
                 new File("./pom.zip")
         );
-    }
 
-    private static void isValidNumberOfArgs(String[] args) throws IOException {
-        if (args.length != 3) {
-            throw new IllegalArgumentException("Number of parameters should be equals 3.");
-        }
+        isValidNumberOfArgs(args);
+        ArgsName.of(args);
+
         ArgsName arguments = ArgsName.of(args);
         String sourceDirectory = arguments.get("d");
         Path sourceFile = Paths.get(sourceDirectory);
-        if (sourceDirectory.isEmpty() || !sourceFile.toFile().exists()) {
-            throw new IllegalArgumentException("wrong argument: " + sourceDirectory + ". Path " + sourceDirectory + " doesn't exist.");
-        }
-        String excludedFile = "." + arguments.get("e");
 
+        checkSourceDirectory(sourceDirectory, sourceFile);
+
+        String excludedFile = arguments.get("e").endsWith(".") ? arguments.get("e") : "." + arguments.get("e");
         String destinationDirectory = arguments.get("o");
         File destinationFile = new File(destinationDirectory);
 
-        if (destinationDirectory.isEmpty()) {
-            throw new IllegalArgumentException("wrong argument: " + destinationDirectory + ". Path " + sourceDirectory + " doesn't exist.");
-        }
-
         List<Path> search = Search.search(sourceFile, el -> !el.toFile().getName().endsWith(excludedFile));
+
         packFiles(search, destinationFile);
     }
+
+    private static void checkSourceDirectory(String sourceDirectory, Path sourceFile) {
+        if (sourceDirectory.isEmpty() || !sourceFile.toFile().exists()) {
+            throw new IllegalArgumentException("wrong argument: " + sourceDirectory + ". Path " + sourceDirectory + " doesn't exist.");
+        }
+    }
+
+    private static void isValidNumberOfArgs(String[] args) {
+        if (args.length != 3) {
+            throw new IllegalArgumentException("Number of parameters should be equals 3.");
+        }
+    }
+
 }
