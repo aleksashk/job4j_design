@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -33,10 +35,10 @@ public class ConsoleChat {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("Enter message for you PCbot: ");
             String line = reader.readLine();
-            while (!line.equals(OUT)) {
+            while (!OUT.equals(line)) {
                 String phrase = "YOU: " + line + "\n";
                 chat.add(phrase);
-                while (!line.equals(STOP) && flag) {
+                while (!STOP.equals(line) && flag) {
                     Random random = new Random();
                     int randomPhraseIndex = random.nextInt(answerList.size());
                     String pcAnswer = "PC: " + answerList.get(randomPhraseIndex);
@@ -44,16 +46,16 @@ public class ConsoleChat {
                     chat.add(pcAnswer);
                     chat.add(System.lineSeparator());
                     line = reader.readLine();
-                    if (line.equals(STOP)) {
+                    if (STOP.equals(line)) {
                         flag = false;
                     }
-                    if (line.equals(OUT)) {
+                    if (OUT.equals(line)) {
                         saveLog(chat);
                         return;
                     }
                 }
                 line = reader.readLine();
-                if (line.equals(CONTINUE)) {
+                if (CONTINUE.equals(line)) {
                     flag = true;
                 }
             }
@@ -65,7 +67,7 @@ public class ConsoleChat {
         List<String> rsl = new ArrayList<>();
 
         Path pathAnswerPhrases = Paths.get(botAnswers);
-        try (BufferedReader reader = new BufferedReader(new FileReader(pathAnswerPhrases.toFile()))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(pathAnswerPhrases.toFile(), StandardCharsets.UTF_8))) {
             reader.lines().forEach(rsl::add);
         }
         return rsl;
@@ -73,7 +75,7 @@ public class ConsoleChat {
 
     private void saveLog(List<String> log) throws IOException {
         Path logPath = Paths.get(path);
-        try (PrintWriter writer = new PrintWriter(new FileWriter(logPath.toFile()))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(logPath.toFile(), StandardCharsets.UTF_8))) {
             for (String str : log) {
                 writer.write(str);
             }

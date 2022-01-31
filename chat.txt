@@ -1,11 +1,15 @@
-YOU: Hello
-PC: Take care.
-PC: No way!
+YOU: Hi
 PC: How are you?
-PC: She is nice)
-YOU: hi
-YOU: eee
-YOU: ???
-YOU: продолжить
-PC: No way!
+PC: How are you?
+PC: How are you?
+PC: Take care.
 PC: I'm busy...
+PC: Never mind.
+PC: Take care.
+YOU: hi
+YOU: hey??
+YOU: where are you?
+YOU: продолжить
+PC: Hello!
+PC: I'm busy...
+PC: How are you?
