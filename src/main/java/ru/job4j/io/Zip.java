@@ -54,7 +54,7 @@ public class Zip {
 
         checkSourceDirectory(sourceDirectory, sourceFile);
 
-        String excludedFile = arguments.get("e").endsWith(".") ? arguments.get("e") : "." + arguments.get("e");
+        String excludedFile = arguments.get("e").startsWith(".") ? arguments.get("e") : "." + arguments.get("e");
         String destinationDirectory = arguments.get("o");
         File destinationFile = new File(destinationDirectory);
 
