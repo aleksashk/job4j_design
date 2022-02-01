@@ -10,10 +10,15 @@ public class UsageLog4j {
 
     public static void main(String[] args) {
         BasicConfigurator.configure();
-        LOG.trace("trace message");
-        LOG.debug("debug message");
-        LOG.info("info message");
-        LOG.warn("warn message");
-        LOG.error("error message");
+        byte byteVar = 12;
+        char charVar = 65;
+        short shortVar = 5412;
+        int intVar = 4_565_887;
+        long longVar = 32L;
+        float floatVar = 0.12f;
+        double doubleVar = 341.59;
+        boolean booleanVar = true;
+
+        LOG.debug("byteVar = {}, charVar = {}, shortVar = {}, intVar = {}, longVar = {}, floatVar = {}, doubleVar = {}, booleanVar = {}", byteVar, charVar, shortVar, intVar, longVar, floatVar, doubleVar, booleanVar);
     }
 }
