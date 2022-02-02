@@ -1,13 +1,40 @@
 package ru.job4j.serialization.xml;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.StringWriter;
+import java.util.Arrays;
+
+@XmlRootElement(name = "car")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Car {
-    boolean isTruck;
-    int numberOfPassengers;
-    String color;
+
+    @XmlAttribute
+    private boolean isTruck;
+
+    @XmlAttribute
+    private int numberOfPassengers;
+
+    @XmlAttribute
+    private String color;
+
     Engine engine;
+
+    @XmlElementWrapper(name = "bonuses")
+    @XmlElement(name = "bonus")
     String[] bonuses;
 
-    public Car(boolean isTruck, int numberOfPassengers, String color, Engine engine, String[] bonuses) {
+    public Car() {
+    }
+
+    public Car(boolean isTruck, int numberOfPassengers, String color, Engine engine, String... bonuses) {
         this.isTruck = isTruck;
         this.numberOfPassengers = numberOfPassengers;
         this.color = color;
@@ -15,35 +42,16 @@ public class Car {
         this.bonuses = bonuses;
     }
 
-    public boolean isTruck() {
-        return isTruck;
+    @Override
+    public String toString() {
+        return "Car{"
+                + "isTruck=" + isTruck
+                + ", numberOfPassengers="
+                + numberOfPassengers
+                + ", color='" + color + '\''
+                + ", engine=" + engine
+                + ", bonuses=" + Arrays.toString(bonuses)
+                + '}';
     }
 
-    public void setTruck(boolean truck) {
-        isTruck = truck;
-    }
-
-    public int getNumberOfPassengers() {
-        return numberOfPassengers;
-    }
-
-    public void setNumberOfPassengers(int numberOfPassengers) {
-        this.numberOfPassengers = numberOfPassengers;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public Engine getEngine() {
-        return engine;
-    }
-
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-    }
 }

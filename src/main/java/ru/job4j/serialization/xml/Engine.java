@@ -1,9 +1,22 @@
 package ru.job4j.serialization.xml;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "engine")
 public class Engine {
-    String name;
-    double volume;
-    String typeOfOil;
+
+    @XmlAttribute
+    private String name;
+
+    @XmlAttribute
+    private double volume;
+
+    @XmlAttribute
+    private String typeOfOil;
+
+    public Engine() {
+    }
 
     public Engine(String name, double volume, String typeOfOil) {
         this.name = name;
@@ -11,27 +24,12 @@ public class Engine {
         this.typeOfOil = typeOfOil;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getVolume() {
-        return volume;
-    }
-
-    public void setVolume(double volume) {
-        this.volume = volume;
-    }
-
-    public String getTypeOfOil() {
-        return typeOfOil;
-    }
-
-    public void setTypeOfOil(String typeOfOil) {
-        this.typeOfOil = typeOfOil;
+    @Override
+    public String toString() {
+        return "Engine{"
+                + "name='" + name + '\''
+                + ", volume=" + volume
+                + ", typeOfOil='" + typeOfOil + '\''
+                + '}';
     }
 }
