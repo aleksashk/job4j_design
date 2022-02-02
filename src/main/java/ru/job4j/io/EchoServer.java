@@ -11,24 +11,40 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer {
-    public static void main(String[] args) throws IOException {
+    private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
+
+    public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(9000)) {
             while (!server.isClosed()) {
                 Socket socket = server.accept();
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
-                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                    out.write("HTTP/1.1 200 OK\r\n\n".getBytes());
                     for (String str = in.readLine(); str != null && !str.isEmpty(); str = in.readLine()) {
                         System.out.println(str);
-                        if (str.endsWith("?msg=Bye")) {
-                            break;
+                        if (str.contains("Hello")) {
+                            out.write("\r\n\r\n".getBytes());
+                            out.write("Hello".getBytes());
+                            out.flush();
+                        }
+                        if (str.contains("Exit")) {
+                            out.write("\r\n\r\n".getBytes());
+                            out.write("Завершить работу сервера.".getBytes());
+                            out.flush();
+                            out.close();
+                            server.close();
+                        }
+                        if (str.contains("What")) {
+                            out.write("\r\n\r\n".getBytes());
+                            out.write("What".getBytes());
+                            out.flush();
                         }
                     }
-                    out.flush();
-                    server.close();
                 }
             }
+        } catch (IOException e) {
+            LOG.error("Exception in EchoServer", e);
         }
     }
 }
