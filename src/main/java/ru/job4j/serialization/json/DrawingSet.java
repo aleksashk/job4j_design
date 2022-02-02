@@ -1,6 +1,5 @@
 package ru.job4j.serialization.json;
 
-
 import java.util.Arrays;
 
 public class DrawingSet {
