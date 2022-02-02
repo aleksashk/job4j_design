@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 public class CSVReader {
     public static void main(String[] args) throws Exception {
+        ArgsName argsName = ArgsName.of(new String[]{
+                "-path=" + new File(args[0]).getAbsolutePath(), "-delimiter=" + args[1], "-out=" + new File(args[2]).getAbsolutePath(), "-filter" + args[3]});
+
         String data = String.join(
                 System.lineSeparator(),
                 "name;age;last_name;education",
@@ -14,14 +17,11 @@ public class CSVReader {
                 "Jack;25;Johnson;Undergraduate",
                 "William;30;Brown;Secondary special"
         );
-        File file = new File("source.csv");
+        File file = new File(args[0]);
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
             writer.println(data);
         }
-        File target = new File("target.csv");
-        ArgsName argsName = ArgsName.of(new String[]{
-                "-path=" + file.getAbsolutePath(), "-delimiter=;", "-out=" + target.getAbsolutePath(), "-filter=name,age"
-        });
+
         CSVReader.handle(argsName);
     }
 
