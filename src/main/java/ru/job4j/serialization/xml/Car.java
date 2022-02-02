@@ -3,14 +3,14 @@ package ru.job4j.serialization.xml;
 public class Car {
     boolean isTruck;
     int numberOfPassengers;
-    String Color;
+    String color;
     Engine engine;
     String[] bonuses;
 
     public Car(boolean isTruck, int numberOfPassengers, String color, Engine engine, String[] bonuses) {
         this.isTruck = isTruck;
         this.numberOfPassengers = numberOfPassengers;
-        Color = color;
+        this.color = color;
         this.engine = engine;
         this.bonuses = bonuses;
     }
@@ -32,11 +32,11 @@ public class Car {
     }
 
     public String getColor() {
-        return Color;
+        return color;
     }
 
     public void setColor(String color) {
-        Color = color;
+        this.color = color;
     }
 
     public Engine getEngine() {
