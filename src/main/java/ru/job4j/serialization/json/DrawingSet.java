@@ -1,5 +1,7 @@
 package ru.job4j.serialization.json;
 
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
 public class DrawingSet {
@@ -13,6 +15,12 @@ public class DrawingSet {
         this.price = price;
         this.things = things;
         this.descriptions = descriptions;
+    }
+
+    public DrawingSet(Boolean isAmateur, double price, String[] things) {
+        this.isAmateur = isAmateur;
+        this.price = price;
+        this.things = things;
     }
 
     public Boolean getAmateur() {
@@ -55,5 +63,13 @@ public class DrawingSet {
                 + ", things=" + Arrays.toString(things)
                 + ", descriptions=" + descriptions
                 + '}';
+    }
+
+    public static void main(String[] args) {
+        DrawingSet drawingSet = new DrawingSet(true, 2.15, new String[]{"pencils", "pen"}, new Descriptions("Drawin set for kids", 1244, "Black pencil, red pencil, green pen"));
+        Descriptions descriptions = new Descriptions("Drawin set for kids", 1244, "Black pencil, red pencil, green pen");
+        drawingSet.setDescriptions(descriptions);
+
+        System.out.println(new JSONObject(drawingSet));
     }
 }
