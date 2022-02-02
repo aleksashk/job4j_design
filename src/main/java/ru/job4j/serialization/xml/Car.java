@@ -7,7 +7,7 @@ public class Car {
     Engine engine;
     String[] bonuses;
 
-    public Car(boolean isTruck, int numberOfPassengers, String color, Engine engine, String[] bonuses ) {
+    public Car(boolean isTruck, int numberOfPassengers, String color, Engine engine, String[] bonuses) {
         this.isTruck = isTruck;
         this.numberOfPassengers = numberOfPassengers;
         Color = color;
