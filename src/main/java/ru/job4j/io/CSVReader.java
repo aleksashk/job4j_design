@@ -7,7 +7,11 @@ import java.util.Scanner;
 
 public class CSVReader {
     public static void main(String[] args) throws Exception {
+        if (args.length != 4) {
+            throw new IllegalArgumentException("Number of parameters doesn't equals 4");
+        }
         ArgsName argsName = ArgsName.of(args);
+
         CSVReader.handle(argsName);
     }
 
@@ -35,7 +39,7 @@ public class CSVReader {
         Scanner scanner1 = new Scanner(new File(src));
         if ("stdout".equals(dest)) {
             while (scanner1.hasNextLine()) {
-                String[] lines = scanner1.nextLine().split(", ");
+                String[] lines = scanner1.nextLine().split(delim);
                 for (int i = 0; i < indexes.length; i++) {
                     System.out.print(lines[indexes[i]]);
                     if (i != indexes.length - 1) {
