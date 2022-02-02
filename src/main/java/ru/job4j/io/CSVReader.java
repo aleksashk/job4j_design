@@ -3,6 +3,7 @@ package ru.job4j.io;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class CSVReader {
@@ -11,6 +12,22 @@ public class CSVReader {
             throw new IllegalArgumentException("Number of parameters doesn't equals 4");
         }
         ArgsName argsName = ArgsName.of(args);
+
+        if (!argsName.get("path").endsWith(".csv") || !Path.of(argsName.get("path")).toFile().exists()) {
+            throw new IllegalArgumentException("Wrong source file name");
+        }
+        if (!argsName.get("delimiter").equals(".")) {
+            throw new IllegalArgumentException("Wrong delimiter");
+        }
+        if (!argsName.get("delimiter").equals(";")) {
+            throw new IllegalArgumentException("Wrong delimiter");
+        }
+        if (!argsName.get("out").endsWith(".csv") || !argsName.get("out").equals("stdout")) {
+            throw new IllegalArgumentException("Wrong destination");
+        }
+        if (argsName.get("filter") == null || argsName.get("filter").isEmpty()) {
+            throw new IllegalArgumentException("Wrong filter");
+        }
 
         CSVReader.handle(argsName);
     }
