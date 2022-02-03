@@ -58,6 +58,7 @@ public class FileFinder {
 
         String directoryName = argsName.get("d");
         String fileName = argsName.get("n");
+        String typeSearch = argsName.get("t");
         String resultFileName = argsName.get("o");
 
         File directory = new File(directoryName);
@@ -65,7 +66,7 @@ public class FileFinder {
 
         ifDirectoryEmpty(directoryName, filesStr);
 
-        checkDirectory(fileName, resultFileName, filesStr);
+        checkDirectory(fileName, resultFileName, filesStr, typeSearch);
     }
 
     private static void ifDirectoryEmpty(String directoryName, File[] filesStr) {
@@ -74,17 +75,21 @@ public class FileFinder {
         }
     }
 
-    private static void checkDirectory(String fileName, String resultFileName, File[] filesStr) throws IOException {
+    private static void checkDirectory(String fileName, String resultFileName, File[] filesStr, String typeSearch) throws IOException {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(resultFileName))) {
             for (File file : filesStr) {
                 if (file.isDirectory()) {
                     File[] tempDir = file.listFiles();
                     ifDirectoryEmpty(file.getName(), tempDir);
-                    checkDirectory(fileName, resultFileName, tempDir);
+                    checkDirectory(fileName, resultFileName, tempDir, typeSearch);
                 }
-                if (file.isFile() && file.getName().endsWith(fileName)) {
-                    builder.append(file).append(System.lineSeparator());
+                if (file.isFile()) {
+                    if ("name".equals(typeSearch) && file.getName().endsWith(fileName)) {
+                        builder.append(file).append(System.lineSeparator());
+                    } else if ("mask".equals(typeSearch) && file.getName().contains(fileName.replaceAll("\\*", ""))) {
+                        builder.append(file).append(System.lineSeparator());
+                    }
                 }
             }
             writer.write(builder.toString());
