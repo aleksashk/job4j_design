@@ -13,11 +13,9 @@ public class FileFinder {
     public static StringBuilder builder = new StringBuilder();
 
     public static void main(String[] args) throws Exception {
-        String msg = "Enter parameters: -d=\"c://Users//Aleksandr//Desktop//X\" -n=\"*.txt\" -t=mask -o=\"resultFileFinder.txt\"\n d - directory for search \n n - file name\n t - type for searching mask\\name\n o - file name for report";
-
-        System.out.println(msg);
-
-        checkNumberOfArgs(args);
+        if (!checkNumberOfArgs(args)) {
+            return;
+        }
 
         ArgsName argsName = ArgsName.of(args);
 
@@ -51,10 +49,15 @@ public class FileFinder {
         }
     }
 
-    private static void checkNumberOfArgs(String[] args) {
+    private static boolean checkNumberOfArgs(String[] args) {
+        boolean result = true;
         if (args.length != 4) {
-            throw new IllegalArgumentException("Number of parameters doesn't equals 4");
+            String msg = "Enter parameters: -d=\"c://Users//Aleksandr//Desktop//X\" -n=\"*.txt\" -t=mask -o=\"resultFileFinder.txt\"\n d - directory for search \n n - file name\n t - type for searching mask\\name\n o - file name for report";
+
+            System.out.println(msg);
+            result = false;
         }
+        return result;
     }
 
     public static void handle(ArgsName argsName) throws Exception {
