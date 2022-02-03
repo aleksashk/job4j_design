@@ -22,14 +22,13 @@ public class CSVReader {
         if (!argsName.get("path").endsWith(".csv") || !Path.of(argsName.get("path")).toFile().exists()) {
             throw new IllegalArgumentException("Wrong source file name");
         }
-        if (!".".equals(argsName.get("delimiter"))) {
-            throw new IllegalArgumentException("Wrong delimiter");
-        }
         if (!";".equals(argsName.get("delimiter"))) {
             throw new IllegalArgumentException("Wrong delimiter");
         }
-        if (!argsName.get("out").endsWith(".csv") || !"stdout".equals(argsName.get("out"))) {
-            throw new IllegalArgumentException("Wrong destination");
+        if (!("stdout".equals(argsName.get("out")))) {
+            if (!argsName.get("out").endsWith(".csv")) {
+                throw new IllegalArgumentException("Wrong destination");
+            }
         }
         if (argsName.get("filter") == null || argsName.get("filter").isEmpty()) {
             throw new IllegalArgumentException("Wrong filter");
