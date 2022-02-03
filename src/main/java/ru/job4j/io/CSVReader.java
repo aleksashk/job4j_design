@@ -8,28 +8,38 @@ import java.util.Scanner;
 
 public class CSVReader {
     public static void main(String[] args) throws Exception {
-        if (args.length != 4) {
-            throw new IllegalArgumentException("Number of parameters doesn't equals 4");
-        }
+
+        checkNumberOfArgs(args);
+
         ArgsName argsName = ArgsName.of(args);
 
+        isArgsCorrect(argsName);
+
+        CSVReader.handle(argsName);
+    }
+
+    private static void isArgsCorrect(ArgsName argsName) {
         if (!argsName.get("path").endsWith(".csv") || !Path.of(argsName.get("path")).toFile().exists()) {
             throw new IllegalArgumentException("Wrong source file name");
         }
-        if (!argsName.get("delimiter").equals(".")) {
+        if (!".".equals(argsName.get("delimiter"))) {
             throw new IllegalArgumentException("Wrong delimiter");
         }
-        if (!argsName.get("delimiter").equals(";")) {
+        if (!";".equals(argsName.get("delimiter"))) {
             throw new IllegalArgumentException("Wrong delimiter");
         }
-        if (!argsName.get("out").endsWith(".csv") || !argsName.get("out").equals("stdout")) {
+        if (!argsName.get("out").endsWith(".csv") || !"stdout".equals(argsName.get("out"))) {
             throw new IllegalArgumentException("Wrong destination");
         }
         if (argsName.get("filter") == null || argsName.get("filter").isEmpty()) {
             throw new IllegalArgumentException("Wrong filter");
         }
+    }
 
-        CSVReader.handle(argsName);
+    private static void checkNumberOfArgs(String[] args) {
+        if (args.length != 4) {
+            throw new IllegalArgumentException("Number of parameters doesn't equals 4");
+        }
     }
 
     public static void handle(ArgsName argsName) throws Exception {
