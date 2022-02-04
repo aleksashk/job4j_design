@@ -3,49 +3,28 @@ package ru.job4j.io.search;
 import ru.job4j.io.ArgsName;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.NoSuchElementException;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.function.Predicate;
 
 public class FileFinder {
-    public static StringBuilder builder = new StringBuilder();
-
-    public static void main(String[] args) throws Exception {
-        if (!checkNumberOfArgs(args)) {
-            return;
-        }
-
-        ArgsName argsName = ArgsName.of(args);
-
-        isArgsCorrect(argsName);
-
-        FileFinder.handle(argsName);
-    }
 
     private static void isArgsCorrect(ArgsName argsName) {
+
         if (!Paths.get(argsName.get("d")).toFile().isDirectory()) {
             throw new IllegalArgumentException("Wrong source path");
         }
-        if (argsName.get("n").split("\\.")[0] == null
-                || argsName.get("n").split("\\.")[0].isEmpty()
-                || argsName.get("n").split("\\.")[1] == null
-                || argsName.get("n").split("\\.")[1].isEmpty()
-                || argsName.get("n").split("\\.")[1].length() != 3) {
-            throw new IllegalArgumentException("Wrong source file name");
-        }
+
         if (!("mask".equals(argsName.get("t")))) {
             if (!"name".equals(argsName.get("t"))) {
                 throw new IllegalArgumentException("Wrong search type");
             }
-        }
-        if (argsName.get("o").split("\\.")[0] == null
-                || argsName.get("o").split("\\.")[0].isEmpty()
-                || argsName.get("o").split("\\.")[1] == null
-                || argsName.get("o").split("\\.")[1].isEmpty()
-                || argsName.get("o").split("\\.")[1].length() != 3) {
-            throw new IllegalArgumentException("Wrong destination file name");
         }
     }
 
@@ -60,44 +39,91 @@ public class FileFinder {
         return result;
     }
 
-    public static void handle(ArgsName argsName) throws Exception {
+    public static void main(String[] args) throws IOException {
+        if (!checkNumberOfArgs(args)) {
+            return;
+        }
 
-        String directoryName = argsName.get("d");
-        String fileName = argsName.get("n");
-        String typeSearch = argsName.get("t");
-        String resultFileName = argsName.get("o");
+        ArgsName argsName = ArgsName.of(args);
 
-        File directory = new File(directoryName);
-        File[] filesStr = directory.listFiles();
+        isArgsCorrect(argsName);
 
-        ifDirectoryEmpty(directoryName, filesStr);
-
-        checkDirectory(fileName, resultFileName, filesStr, typeSearch);
+        searchFile(argsName);
     }
 
-    private static void ifDirectoryEmpty(String directoryName, File[] filesStr) {
-        if (filesStr == null || filesStr.length == 0) {
-            throw new NoSuchElementException("Directory " + directoryName + " is empty");
+    private static void searchFile(ArgsName argsName) throws IOException {
+        Path dir = Paths.get(argsName.get("d"));
+        String searchType = argsName.get("t");
+        String file = argsName.get("n");
+        String report = argsName.get("o");
+
+        if ("mask".equals(searchType)) {
+            SearcherByMask searcher = new SearcherByMask(file, report);
+            Files.walkFileTree(dir, searcher);
+            searcher.getReport();
+        } else if ("name".equals(searchType)) {
+            SearcherByName searcher = new SearcherByName(file, report);
+            Files.walkFileTree(dir, searcher);
+            searcher.getReport();
         }
     }
+}
 
-    private static void checkDirectory(String fileName, String resultFileName, File[] filesStr, String typeSearch) throws IOException {
+class SearcherByName extends SimpleFileVisitor<Path> {
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(resultFileName))) {
-            for (File file : filesStr) {
-                if (file.isDirectory()) {
-                    File[] tempDir = file.listFiles();
-                    ifDirectoryEmpty(file.getName(), tempDir);
-                    checkDirectory(fileName, resultFileName, tempDir, typeSearch);
-                }
-                if (file.isFile()) {
-                    if ("name".equals(typeSearch) && file.getName().endsWith(fileName)) {
-                        builder.append(file).append(System.lineSeparator());
-                    } else if ("mask".equals(typeSearch) && file.getName().contains(fileName.replaceAll("\\*", ""))) {
-                        builder.append(file).append(System.lineSeparator());
-                    }
-                }
-            }
+    public static StringBuilder builder = new StringBuilder();
+
+    private final String fileName;
+    private final String report;
+
+    public SearcherByName(String fileName, String report) {
+        this.fileName = fileName;
+        this.report = report;
+    }
+
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+        Predicate<Path> predicate = path -> path.toFile().getName().equals(fileName);
+
+        if (predicate.test(file)) {
+            builder.append(file.toAbsolutePath()).append(System.lineSeparator());
+        }
+
+        return FileVisitResult.CONTINUE;
+    }
+
+    public void getReport() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(report))) {
+            writer.write(builder.toString());
+        }
+    }
+}
+
+class SearcherByMask extends SimpleFileVisitor<Path> {
+
+    public static StringBuilder builder = new StringBuilder();
+
+    private final String mask;
+    private final String report;
+
+    public SearcherByMask(String mask, String report) {
+        this.mask = mask;
+        this.report = report;
+    }
+
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+        Predicate<Path> predicate = path -> path.toFile().getName().contains(mask);
+
+        if (predicate.test(file)) {
+            builder.append(file.toAbsolutePath()).append(System.lineSeparator());
+        }
+
+        return FileVisitResult.CONTINUE;
+    }
+
+    public void getReport() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(report))) {
             writer.write(builder.toString());
         }
     }
