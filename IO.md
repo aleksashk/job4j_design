@@ -98,7 +98,7 @@ IO API – (Input & Output) в первую очередь это Java API, ко
 
 Для разных типов данных существуют разные реализации классов
 
-|_| Byte Based| _| Character Based| _ |
+|   Byte Based|    Character Based| _ |
 | ---| ---| ---| ---| --- |
 | _| Input| Output| Input| Output |
 | Basic| InputStream| OutputStream| Reader / InputStreamReader| Writer / OutputStreamWriter |
