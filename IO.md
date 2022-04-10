@@ -94,23 +94,6 @@ IO API – (Input & Output) в первую очередь это Java API, ко
 3) `System.err`, `System.in`, `System.out`;
 4) при работе с буфером.
 
-Для разных типов данных существуют разные реализации классов
-
-| _|Byte Based|  _|Character Based| _ |
-| ---| ---| ---| ---| --- |
-| _| Input| Output| Input| Output |
-| Basic| InputStream| OutputStream| Reader / InputStreamReader| Writer / OutputStreamWriter |
-| Arrays| ByteArrayInputStream| ByteArrayOutputStream| CharArrayReader| CharArrayWriter |
-| Files| FileInputStream / RandomAccessFile| FileOutputStream / RandomAccessFile| FileReader| FileWriter |
-| Pipes| PipedInputStream| PipedOutputStream| PipedReader| PipedWriter |
-| Buffering| BufferedInputStream| BufferedOutputStream| BufferedReader| BufferedWriter |
-| Filtering| FilterInputStream| FilterOutputStream| FilterReader| FilterWriter |
-| Parsing| PushbackInputStream / StreamTokenizer| _| PushbackReader / LineNumberReader| _ |
-| Strings| _| _| StringReader| StringWriter |
-| Data| DataInputStream| DataOutputStream| _| _ |
-| Data - Formatted| _| PrintStream| _| PrintWriter |
-| Objects| ObjectInputStream| ObjectOutputStream| _| _ |
-
 **Классы Java IO API**
 
 **Базовые**
@@ -121,7 +104,7 @@ IO API – (Input & Output) в первую очередь это Java API, ко
 + `InputStreamReader` / `OutputStreamWriter` Входной/выдодной поток, транслирующий байты в символы
 
 **Массивы**
-+ `ByteArrayInputStream` / `ByteArrayOutputStream` - использует байтовый массив в потоке.
++ `ByteArrayInputStream` / `ByteArrayOutputStream` - позволяет использовать буфер в памяти (массив байтов) в качестве источника данных для входного потока / все данные, посылаемые в этот поток, размещаются в предварительно созданном буфере.
 + `CharArrayReader` / `CharArrayWriter` - читает/пишет из символьного массива.
 
 **Files**
@@ -138,49 +121,14 @@ IO API – (Input & Output) в первую очередь это Java API, ко
 если не вызвать его для всех выходных файловых потоков, в буферах могут остаться данные, и файл получится неполным
 
 **Буферизация**
-+ `BufferedInputStream` / `BufferedOutputStream` - буферизируемый поток. Буферы вывода нужно для повышения производительности
-+ `BufferedReader` / `BufferedWriter`
++ `BufferedInputStream` / `BufferedOutputStream` - буферизируемые байтовые потоки. Нужны для повышения производительности.
++ `BufferedReader` / `BufferedWriter` - буферизируемые символьные потоки. Нужны для повышения производительности.
 
-----------------------------------------------------------------------------
-
-IO API – (Input & Output) в первую очередь это Java API, которые облегчают работу с потоками. В java.io существуют так называемые потоки ввода и вывода (InputStream and OutputStream).
-
-В основном java.io предназначен для чтения и записи данных в ресурс:
-
-файл
-при работе с сетевым подключением
-System.err, System.in, System.out
-при работе с буфером
-Классы Java IO API
-
-Базовые
-
-InputStream / OutputStream - абстрактные классы, определяющие байтовый поток ввода/вывода
-Reader / Writer - абстрактные классы, определяющие символьный поток ввода/вывода
-InputStreamReader / OutputStreamWriter Входной/выходной потоки, транслирующий байты в символы/символы в байты
-Массивы
-
-ByteArrayInputStream / ByteArrayOutputStream - позволяет использовать буфер в памяти (массив байтов) в качестве источника данных для входного потока / все данные, посылаемые в этот поток, размещаются в предварительно созданном буфере.
-CharArrayReader / CharArrayWriter - читает/пишет из символьного массива.
-Files
-
-FileInputStream / FileOutputStream - Чтение/Запись данных побайтово в файл на диске.
-RandomAccessFile - Чтение/Запись файлов с произвольным доступом. метод seek() позволяет переместиться к определенной позиции и изменить хранящееся там значение. При использовании RandomAccessFile необходимо знать структуру файла. Класс RandomAccessFile содержит методы для чтения и записи примитивов и строк UTF-8. RandomAccessFile может открываться в режиме чтения ("r") или чтения/записи ("rw"). Также есть режим "rws", когда файл открывается для операций чтения-записи и каждое изменение данных файла немедленно записывается на физическое устройство.
-FileReader / FileWriter - входной/выходной потоки, читающий/записывающий в файл.
-Буферизация
-
-BufferedInputStream / BufferedOutputStream - буферизируемые байтовые потоки. Нужны для повышения производительности.
-BufferedReader / BufferedWriter - буферизируемые символьные потоки. Нужны для повышения производительности.
 
 [к оглавлению](#IO)
 
 ## 3. Что такое Java NIO?
 
-| IO| NIO |
-| ---| --- |
-| Потокоориентированный| Буфер-ориентированный |
-| Блокирующий (синхронный) ввод/вывод| Неблокирующий (асинхронный) ввод/вывод |
-----------------------------------------------------------------------------
 
 Пакет java.nio был представлен в Java 1.4. В отличие от java I/O в java NIO введен поток данных, ориентированный на буфер и канал, для операций ввода/вывода, что в результате обеспечивает более быстрое выполнение и лучшую производительность.
 
@@ -464,7 +412,7 @@ oos.writeObject(emp);
 его позже. В Java этот номер версии известен как `SerialVersionUID`. Если во время десериализации, `SerialVersionUID` 
 не соответствует, то процесс завершится с исключением
 
-`SerialVersionUID` используется для указании версии сериализованных данных.
+`SerialVersionUID` используется для указания версии сериализованных данных.
 + Когда мы не объявляем `SerialVersionUID` в нашем классе, среда выполнения Java делает это за нас, но этот процесс 
 чувствителен ко многим метаданным класса включая количество полей, тип полей, модификаторы доступа полей, интерфейсов, 
 которые реализованы в классе и пр. Вы можете найти точную информацию в документации о сериализации от Oracle.
@@ -480,7 +428,7 @@ Java 7 представляет новую абстракцию для пути,
 
 `Path` содержит методы для извлечения элементов пути, манипуляций с ними и их добавления.
 
-Путь к файлу, в разных системх может записываться по разному, `\` или `/`, поэтому лучше
+Путь к файлу, в разных системах может записываться по разному, `\` или `/`, поэтому лучше
 использовать `File.separator` для построения пути
 ```java
 // Cоздание объекта Path через вызов статического метода get() класса Paths 
@@ -596,8 +544,8 @@ Files.deleteIfExists(Paths.get("C:\\Users\\Mayank\\Desktop\\445.txt"));
 
 ## 19. Как переместить файл?
 
-`Java.io.File` does not contains any ready make move file method, 
-but you can workaround with the following two alternatives :
+`Java.io.File` does notне содержит метода готового файла make move, но вы можете обойти эту проблему с помощью 
+следующих двух альтернатив:
 
 + `File.renameTo()` (может не сработать на разных файловых системах. Надо проверять результат)
 + Copy to new file and delete the original file.
@@ -737,12 +685,12 @@ dosView.setArchive(true);
 ```
 
 **Summary**
-+ If we try to write to a file that doesn’t exist, the file will be created first and no exception will be thrown (except using Path method).
-+ Always close the output stream after writing the file content to release all resources. It will also help in not corrupting the file.
-+ Use PrintWriter is used to write formatted text.
-+ Use FileOutputStream to write binary data.
-+ Use DataOutputStream to write primitive data types.
-+ Use FileChannel to write larger files.
++ Если мы попытаемся записать в файл, который не существует, файл будет создан первым, и исключение не будет создано (кроме использования метода Path).
++ Всегда закрывайте выходной поток после записи содержимого файла, чтобы освободить все ресурсы. Это также поможет не повредить файл.
++ Используейте PrintWriter для записи форматированного текста.
++ Используйте FileOutputStream для записи двоичных данных.
++ Используйте DataOutputStream для записи примитивных типов данных.
++ Используйте FileChannel для записи файлов большего размера.
 
 [к оглавлению](#IO)
 
@@ -786,6 +734,8 @@ dosView.setArchive(true);
 ## 25. Что такое сокет?
 
 **Сокет — это программная (логическая) конечная точка, устанавливающая двунаправленную коммуникацию между сервером и одной или несколькими клиентскими программами**. Сокет — это нечто “программное”. Другими словами, сокет не существует на физическом уровне. Прикладное программное обеспечение определяет сокет так, чтобы он использовал порты на основном компьютере для его реализации. Это позволяет программистам комфортно работать с низкоуровневыми деталями сетевых коммуникаций, такими как порты, маршрутизация и т. д., внутри прикладного кода.
+
+Сокет (socket — разъём) - программный интерфейс для обмена данными между процессами. Процессы могут исполняться как на одном компьютере, так на разных, связанных сетью. Иначе говоря, сокет - объект, представляющий конечную точку соединения. Сокет определяется IP-адресом компьютера и номером порта. Для протокола TCP номер порта - целое число от 0 до 65535.
 
 [к оглавлению](#IO)
 
