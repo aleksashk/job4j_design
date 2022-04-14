@@ -46,3 +46,18 @@ select c.mark as mark,
 from cars as c 
 join registration_numbers as number 
 on c.registration_number = number.id;
+
+select c.mark as carMark, 
+	number.value_reg_number as registration_number
+from cars as c 
+join registration_numbers as number 
+on c.registration_number = number.id;
+
+select c.vin_number as vin, 
+	number.value_reg_number as car_registration_number
+from cars as c 
+join registration_numbers as number 
+on c.registration_number = number.id;
+
+
+
