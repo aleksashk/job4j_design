@@ -96,7 +96,7 @@ insert into devices_people(device_id, people_id)
 			on p.id=dp.people_id
 		join devices as d
 			on d.id=dp.device_id
-		group by p.id;
+		group by p.name;
 
 
 5	select p.name as person, avg(d.price)
@@ -105,5 +105,5 @@ insert into devices_people(device_id, people_id)
 			on p.id=dp.people_id
 		join devices as d
 			on d.id=dp.device_id
-		group by p.id
+		group by p.name
 		having avg(d.price) > 5000
