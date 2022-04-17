@@ -64,9 +64,10 @@ insert into product(name, type_id,expired_date, price)
 		where expired_date < current_date 
 
 4 	select * from product
-		join type on product.type_id = type.id
-		order by product.price desc
-		limit 1
+	join type on product.type_id=type.id
+		where price = (
+			select MAX(price) from product
+		);
 	
 5	select type.name as productType, count(type.name) 
 		rom product 
