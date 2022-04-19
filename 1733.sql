@@ -87,7 +87,10 @@ create table car(
 
 1
 
-select * from car;
+select * from car
+	join kuzov on car.kuzov_id = kuzov.id
+	join dvigatel on car.dvigatel_id= dvigatel.id
+	join kp on car.kp_id = kp.id
 
 2
 
