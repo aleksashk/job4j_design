@@ -84,11 +84,12 @@ select d.name from departments d
 	where e.department_id is null;
 
 4
-select * from departments d
-	left join employees e on d.id = e.department_id;
+select d.*, e.* from departments d
+	left join employees e on e.department_id=d.id;
 
-select * from departments d
-	right join employees e on e.department_id=d.id;
+select d.*, e.* from employees e
+	right join departments d on e.department_id=d.id;
+
 
 5
 select * from teens as person_1 
