@@ -72,13 +72,13 @@
 
 ## 1. Что такое поток ввода вывода?
 
+Объект, из которого можно считать данные, называется потоком ввода, а объект, в который можно записывать данные - потоком 
+вывода. Например, если надо считать содержание файла, то применяется поток ввода, а если надо записать в файл - поток вывода.
+
 Цель создания `InputStream` и `OutputStream` это абстрактный доступ к вводу и выводу. Источник при этом не важен. 
 Это может быть файл, консоль, веб-страница. Stream - это бесконечный поток данных, подключенный к источнику данных
 
-
-Объект, из которого можно считать данные, называется потоком ввода, а объект, в который можно записывать данные - потоком вывода. Например, если надо считать содержание файла, то применяется поток ввода, а если надо записать в файл - поток вывода.
-
-В основе всех классов, управляющих потоками байтов, находятся два абстрактных класса: InputStream (представляющий потоки ввода) и OutputStream (представляющий потоки вывода). Но поскольку работать с байтами не очень удобно, то для работы с потоками символов были добавлены абстрактные классы Reader (для счтения потоков символов) и Writer (для записи потоков символов). Все остальные классы, работающие с потоками, являются наследниками этих абстрактных классов.
+В основе всех классов, управляющих потоками байтов, находятся два абстрактных класса: InputStream (представляющий потоки ввода) и OutputStream (представляющий потоки вывода). Но поскольку работать с байтами не очень удобно, то для работы с потоками символов были добавлены абстрактные классы Reader (для чтения потоков символов) и Writer (для записи потоков символов). Все остальные классы, работающие с потоками, являются наследниками этих абстрактных классов.
 
 [к оглавлению](#IO)
 
@@ -94,25 +94,6 @@ IO API – (Input & Output) в первую очередь это Java API, ко
 3) `System.err`, `System.in`, `System.out`;
 4) при работе с буфером.
 
-![img](io_diagram.gif)
-
-Для разных типов данных существуют разные реализации классов
-
-|_| Byte Based| _| Character Based| _ |
-| ---| ---| ---| ---| --- |
-| _| Input| Output| Input| Output |
-| Basic| InputStream| OutputStream| Reader / InputStreamReader| Writer / OutputStreamWriter |
-| Arrays| ByteArrayInputStream| ByteArrayOutputStream| CharArrayReader| CharArrayWriter |
-| Files| FileInputStream / RandomAccessFile| FileOutputStream / RandomAccessFile| FileReader| FileWriter |
-| Pipes| PipedInputStream| PipedOutputStream| PipedReader| PipedWriter |
-| Buffering| BufferedInputStream| BufferedOutputStream| BufferedReader| BufferedWriter |
-| Filtering| FilterInputStream| FilterOutputStream| FilterReader| FilterWriter |
-| Parsing| PushbackInputStream / StreamTokenizer| _| PushbackReader / LineNumberReader| _ |
-| Strings| _| _| StringReader| StringWriter |
-| Data| DataInputStream| DataOutputStream| _| _ |
-| Data - Formatted| _| PrintStream| _| PrintWriter |
-| Objects| ObjectInputStream| ObjectOutputStream| _| _ |
-
 **Классы Java IO API**
 
 **Базовые**
@@ -123,7 +104,7 @@ IO API – (Input & Output) в первую очередь это Java API, ко
 + `InputStreamReader` / `OutputStreamWriter` Входной/выдодной поток, транслирующий байты в символы
 
 **Массивы**
-+ `ByteArrayInputStream` / `ByteArrayOutputStream` - использует байтовый массив в потоке.
++ `ByteArrayInputStream` / `ByteArrayOutputStream` - позволяет использовать буфер в памяти (массив байтов) в качестве источника данных для входного потока / все данные, посылаемые в этот поток, размещаются в предварительно созданном буфере.
 + `CharArrayReader` / `CharArrayWriter` - читает/пишет из символьного массива.
 
 **Files**
@@ -140,103 +121,14 @@ IO API – (Input & Output) в первую очередь это Java API, ко
 если не вызвать его для всех выходных файловых потоков, в буферах могут остаться данные, и файл получится неполным
 
 **Буферизация**
-+ `BufferedInputStream` / `BufferedOutputStream` - буферизируемый поток. Буферы вывода нужно для повышения производительности
-+ `BufferedReader` / `BufferedWriter`
++ `BufferedInputStream` / `BufferedOutputStream` - буферизируемые байтовые потоки. Нужны для повышения производительности.
++ `BufferedReader` / `BufferedWriter` - буферизируемые символьные потоки. Нужны для повышения производительности.
 
-----------------------------------------------------------------------------
-
-IO API – (Input & Output) в первую очередь это Java API, которые облегчают работу с потоками. В java.io существуют так называемые потоки ввода и вывода (InputStream and OutputStream).
-
-В основном java.io предназначен для чтения и записи данных в ресурс:
-
-файл
-при работе с сетевым подключением
-System.err, System.in, System.out
-при работе с буфером
-Классы Java IO API
-
-Базовые
-
-InputStream / OutputStream - абстрактные классы, определяющие байтовый поток ввода/вывода
-Reader / Writer - абстрактные классы, определяющие символьный поток ввода/вывода
-InputStreamReader / OutputStreamWriter Входной/выходной потоки, транслирующий байты в символы/символы в байты
-Массивы
-
-ByteArrayInputStream / ByteArrayOutputStream - позволяет использовать буфер в памяти (массив байтов) в качестве источника данных для входного потока / все данные, посылаемые в этот поток, размещаются в предварительно созданном буфере.
-CharArrayReader / CharArrayWriter - читает/пишет из символьного массива.
-Files
-
-FileInputStream / FileOutputStream - Чтение/Запись данных побайтово в файл на диске.
-RandomAccessFile - Чтение/Запись файлов с произвольным доступом. метод seek() позволяет переместиться к определенной позиции и изменить хранящееся там значение. При использовании RandomAccessFile необходимо знать структуру файла. Класс RandomAccessFile содержит методы для чтения и записи примитивов и строк UTF-8. RandomAccessFile может открываться в режиме чтения ("r") или чтения/записи ("rw"). Также есть режим "rws", когда файл открывается для операций чтения-записи и каждое изменение данных файла немедленно записывается на физическое устройство.
-FileReader / FileWriter - входной/выходной потоки, читающий/записывающий в файл.
-Буферизация
-
-BufferedInputStream / BufferedOutputStream - буферизируемые байтовые потоки. Нужны для повышения производительности.
-BufferedReader / BufferedWriter - буферизируемые символьные потоки. Нужны для повышения производительности.
 
 [к оглавлению](#IO)
 
 ## 3. Что такое Java NIO?
 
-| IO| NIO |
-| ---| --- |
-| Потокоориентированный| Буфер-ориентированный |
-| Блокирующий (синхронный) ввод/вывод| Неблокирующий (асинхронный) ввод/вывод |
-
-**Предпосылки создания:**
-
-Недостатки IO:
-
-+ The `File` class lacked some important functionality, such as a copy method.
-+ It also defined many methods that returned boolean. As one can imagine, in case of an error, `false` was returned, 
-rather than throwing an exception. The developer had, indeed, no way of knowing why it failed.
-+ Did not provide good handling on support of symbolic links.
-+ A limited set of file attributes was provided.
-
-To overcome these problems, java.nio package was introduced in java 4. The key features were:
-+ Channels and Selectors: A channel is an abstraction on lower-level file system features, e.g. memory-mapped files.
-+ Buffers: Buffering for all primitive classes (except for Boolean).
-+ Charset: Charset (`java.nio.charset`), encoders, and decoders to map bytes and Unicode symbols
-
-With java 7 the `java.nio.file` package is introduced providing a better support for handling symbolic links, 
-file attributes access and specially to support extended the file system through classes such 
-as **Path, Paths and Files**.
-
-Состоит из 3 основных компонентов:
-+ `Channels`
-+ `Buffers`
-+ `Selectors`
-
-Java NIO: Channels read data into Buffers, and Buffers write data into Channels
-There are several Channel and Buffer types. Here is a list of the primary Channel implementations in Java NIO:
-+ `FileChannel`
-+ `DatagramChannel`
-+ `SocketChannel`
-+ `ServerSocketChannel`
-
-A Selector allows a single thread to handle multiple Channel's. 
-This is handy if your application has many connections (Channels) open, but only has low traffic on each connection. 
-For instance, in a chat server.
-
-Example.
-```java
-RandomAccessFile aFile = new RandomAccessFile("data/nio-data.txt", "rw");
-    FileChannel inChannel = aFile.getChannel();
-    ByteBuffer buf = ByteBuffer.allocate(48);
-    int bytesRead = inChannel.read(buf);
-    while (bytesRead != -1) {
-      System.out.println("Read " + bytesRead);
-      buf.flip();
-      while(buf.hasRemaining()){
-          System.out.print((char) buf.get());
-      }
-      buf.clear();
-      bytesRead = inChannel.read(buf);
-    }
-    aFile.close();
-```
-
-----------------------------------------------------------------------------
 
 Пакет java.nio был представлен в Java 1.4. В отличие от java I/O в java NIO введен поток данных, ориентированный на буфер и канал, для операций ввода/вывода, что в результате обеспечивает более быстрое выполнение и лучшую производительность.
 
@@ -342,15 +234,6 @@ skip() - если обнаружено совпадение с заданным 
 
 ## 7. Что такое байтовый поток Как он реализован внутри?
 
-Byte streams работает с данными побайтово (8 bits). Например, `FileInputStream` используется для чтения 
-и `FileOutputStream` для записи. Byte streams интерфейс, который внутри основан на байтовом массиве. 
-В основе находится некий буфер который заполняется, вычитывается и заново заполняется. Методы внутри native.
-```java
-private native int read0() throws IOException;
-```
-
-----------------------------------------------------------------------------------------------
-
 Байтовый поток в Java - классы во главе иерархии это InputStream/OutputStream.
 В потоке можно прочитать или записать один или несколько байтов.
 Внутри есть абстрактный метод read() / write(int b), для чтения/записи одного байта. Реализация этого метода и определяет фактическую реализацию потока.
@@ -359,15 +242,6 @@ private native int read0() throws IOException;
 [к оглавлению](#IO)
 
 ## 8. Что такое символьный поток Как он реализован внутри?
-
-В Java, символы хранятся в кодировке `Unicode` (16 bit). Символный поток позволяет читать данные символ за символом. 
-Например `FileReader` и `FileWriter` символьные потоки.
-Для них можно задать кодировку:
-```java 
-Reader reader = new InputStreamReader(in, "UTF-8");
-```
-
-----------------------------------------------------------------------------------------------
 
 Символьный поток в Java - классы во главе иерархии это Reader/Writer.
 В потоке можно прочитать или записать один или несколько символов (char, 2 байта).
@@ -453,7 +327,7 @@ String.format("|%020d|", 93); // prints: |00000000000000000093|
 Класс `System` содержит также три переменные предопределенных потоков ввода-вывода: `in`, `out` и `err`   
 + Переменная `System.out` ссылается на стандартный поток вывода. По умолчанию это консоль.
 + Переменная `System.in` ссылается на стандартный поток ввода, которым по умолчанию является клавиатура.
-+ `System.err` - для ошибок.
++ Переменная `System.err` - для ошибок.
 
 ----------------------------------------------------------------------------------------------
 
@@ -464,7 +338,7 @@ String.format("|%020d|", 93); // prints: |00000000000000000093|
 System.err - для ошибок.
 Перенаправление стандартного ввода-вывода
 
-Класс System позволяет вам перенаправить стандартный ввод, вывод и поток ошибок. Для эотого используются простые статические методы:
+Класс System позволяет вам перенаправить стандартный ввод, вывод и поток ошибок. Для этого используются простые статические методы:
 
 setIn(InputStream)
 setOut(PrintStream)
@@ -505,7 +379,7 @@ setErr(PrintStream)
 ## 14. Что такое поток объектов, Object stream?
 
 `ObjectOutputStream` используется для конвертации объектов в поток. В java это называется сериализация. 
-Объект преобразоыванный таким образом может быть сохранен в базу данных, передан по сети и т.п. 
+Объект преобразованный таким образом может быть сохранен в базу данных, передан по сети и т.п. 
 Для записи в файл можно использовать `FileOutputStream`.
 Объект который передается в потоке должен реализовывать интерфейс `java.io.Serializable`.
 ```java
@@ -520,7 +394,7 @@ oos.writeObject(emp);
 его позже. В Java этот номер версии известен как `SerialVersionUID`. Если во время десериализации, `SerialVersionUID` 
 не соответствует, то процесс завершится с исключением
 
-`SerialVersionUID` используется для указании версии сериализованных данных.
+`SerialVersionUID` используется для указания версии сериализованных данных.
 + Когда мы не объявляем `SerialVersionUID` в нашем классе, среда выполнения Java делает это за нас, но этот процесс 
 чувствителен ко многим метаданным класса включая количество полей, тип полей, модификаторы доступа полей, интерфейсов, 
 которые реализованы в классе и пр. Вы можете найти точную информацию в документации о сериализации от Oracle.
@@ -536,7 +410,7 @@ Java 7 представляет новую абстракцию для пути,
 
 `Path` содержит методы для извлечения элементов пути, манипуляций с ними и их добавления.
 
-Путь к файлу, в разных системх может записываться по разному, `\` или `/`, поэтому лучше
+Путь к файлу, в разных системах может записываться по разному, `\` или `/`, поэтому лучше
 использовать `File.separator` для построения пути
 ```java
 // Cоздание объекта Path через вызов статического метода get() класса Paths 
@@ -652,8 +526,8 @@ Files.deleteIfExists(Paths.get("C:\\Users\\Mayank\\Desktop\\445.txt"));
 
 ## 19. Как переместить файл?
 
-`Java.io.File` does not contains any ready make move file method, 
-but you can workaround with the following two alternatives :
+`Java.io.File` не содержит метода готового файла make move, но вы можете обойти эту проблему с помощью 
+следующих двух альтернатив:
 
 + `File.renameTo()` (может не сработать на разных файловых системах. Надо проверять результат)
 + Copy to new file and delete the original file.
@@ -793,12 +667,12 @@ dosView.setArchive(true);
 ```
 
 **Summary**
-+ If we try to write to a file that doesn’t exist, the file will be created first and no exception will be thrown (except using Path method).
-+ Always close the output stream after writing the file content to release all resources. It will also help in not corrupting the file.
-+ Use PrintWriter is used to write formatted text.
-+ Use FileOutputStream to write binary data.
-+ Use DataOutputStream to write primitive data types.
-+ Use FileChannel to write larger files.
++ Если мы попытаемся записать в файл, который не существует, файл будет создан первым, и исключение не будет создано (кроме использования метода Path).
++ Всегда закрывайте выходной поток после записи содержимого файла, чтобы освободить все ресурсы. Это также поможет не повредить файл.
++ Используейте PrintWriter для записи форматированного текста.
++ Используйте FileOutputStream для записи двоичных данных.
++ Используйте DataOutputStream для записи примитивных типов данных.
++ Используйте FileChannel для записи файлов большего размера.
 
 [к оглавлению](#IO)
 
@@ -842,6 +716,8 @@ dosView.setArchive(true);
 ## 25. Что такое сокет?
 
 **Сокет — это программная (логическая) конечная точка, устанавливающая двунаправленную коммуникацию между сервером и одной или несколькими клиентскими программами**. Сокет — это нечто “программное”. Другими словами, сокет не существует на физическом уровне. Прикладное программное обеспечение определяет сокет так, чтобы он использовал порты на основном компьютере для его реализации. Это позволяет программистам комфортно работать с низкоуровневыми деталями сетевых коммуникаций, такими как порты, маршрутизация и т. д., внутри прикладного кода.
+
+Сокет (socket — разъём) - программный интерфейс для обмена данными между процессами. Процессы могут исполняться как на одном компьютере, так на разных, связанных сетью. Иначе говоря, сокет - объект, представляющий конечную точку соединения. Сокет определяется IP-адресом компьютера и номером порта. Для протокола TCP номер порта - целое число от 0 до 65535.
 
 [к оглавлению](#IO)
 
@@ -1113,7 +989,7 @@ public static void main(String[] args) {
 
 Атрибуты - это часть синтаксиса, которая позволяет определить свойста элементов.
 
-Атрибуты пишутся в открывающем теги, после его имени в формате: `имяАтрибут="его значение"`
+Атрибуты пишутся в открывающем теге, после его имени в формате: `имяАтрибут="его значение"`
 
 Например:
 
@@ -1155,7 +1031,7 @@ public static void main(String[] args) {
 
 1. Для использования JAXB нам нужно в модели добавить дефолтные конструкторы.
 
-2. Для того чтобы сериализовать и десериализовать нам нужно добавить аннотации JAXB, которую дадут библиотеке информацию о том как парсить объект.
+2. Для того чтобы сериализовать и десериализовать нам нужно добавить аннотации JAXB, которые дадут библиотеке информацию о том как парсить объект.
 
    1. xml обязательно должен иметь корневой тег, в котором все и будет располагаться. Для его обозначения служит @XmlRootElement. Эту аннотацию нужно ставить над сущностью, которая будет корневой.
    2. Над вложенными сущностями нам нужно поставить просто @XmlElement
