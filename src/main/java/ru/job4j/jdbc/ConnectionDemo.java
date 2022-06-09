@@ -1,20 +1,36 @@
 package ru.job4j.jdbc;
 
-import ru.job4j.io.Config;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class ConnectionDemo {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        String path = "app.properties";
-        Config config = new Config(path);
-        config.load();
-        Class.forName("org.postgresql.Driver");
-        String url = config.value("jdbc.url");
-        String login = config.value("jdbc.username");
-        String password = config.value("jdbc.password");
+    private Properties properties;
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void load() throws IOException {
+        properties = new Properties();
+        try (InputStream inputStream = ConnectionDemo.class.getClassLoader().getResourceAsStream("app.properties")) {
+            properties.load(inputStream);
+        }
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException {
+        ConnectionDemo connectionDemo = new ConnectionDemo();
+        connectionDemo.load();
+        String name = connectionDemo.getProperties().getProperty("jdbc.Driver");
+        String url = connectionDemo.getProperties().getProperty("jdbc.url");
+        String login = connectionDemo.getProperties().getProperty("jdbc.username");
+        String password = connectionDemo.getProperties().getProperty("jdbc.password");
+        Class.forName(name);
+
         try (Connection connection = DriverManager.getConnection(url, login, password)) {
             DatabaseMetaData metaData = connection.getMetaData();
             System.out.println(metaData.getUserName());
