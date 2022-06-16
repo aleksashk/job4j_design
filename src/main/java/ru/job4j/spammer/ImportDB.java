@@ -1,6 +1,9 @@
 package ru.job4j.spammer;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -25,7 +28,12 @@ public class ImportDB {
             rd.lines()
                     .filter(s -> s.contains(";"))
                     .map(s -> s.split(";"))
-                    .filter(s -> s.length == 2)
+                    .filter(string -> {
+                        if (string.length != 2 || string[0].isBlank() || string[1].isBlank()) {
+                            throw new IllegalArgumentException("Wrong data.");
+                        }
+                        return true;
+                    })
                     .forEach(s -> users.add(new User(s[0], s[1])));
         }
         return users;
@@ -42,10 +50,9 @@ public class ImportDB {
                 for (User user : users) {
                     ps.setString(1, user.name);
                     ps.setString(2, user.email);
-                    if (ps.executeUpdate() > 0) {
-                        System.out.printf("User name: %s, email: %s was added to the database.%s",
-                                user.name, user.email, System.lineSeparator());
-                    }
+                    System.out.printf("User name: %s, email: %s was added to the database.%s",
+                            user.name, user.email, System.lineSeparator());
+
                 }
             }
         }
@@ -63,8 +70,10 @@ public class ImportDB {
 
     public static void main(String[] args) throws Exception {
         Properties cfg = new Properties();
-        try (InputStream in = ImportDB.class.getClassLoader().getResourceAsStream("app.properties")) {
-            cfg.load(in);
+        try (FileInputStream fio = new FileInputStream("app.properties")) {
+            cfg.load(fio);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         ImportDB db = new ImportDB(cfg, "./dump.txt");
         db.save(db.load());
