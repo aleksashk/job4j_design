@@ -1,9 +1,9 @@
 package ru.job4j.spammer;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -69,13 +69,11 @@ public class ImportDB {
     }
 
     public static void main(String[] args) throws Exception {
-        Properties cfg = new Properties();
-        try (FileInputStream fio = new FileInputStream("app.properties")) {
-            cfg.load(fio);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Properties config = new Properties();
+        try (InputStream in = ImportDB.class.getClassLoader().getResourceAsStream("app.properties")) {
+            config.load(in);
         }
-        ImportDB db = new ImportDB(cfg, "./dump.txt");
+        ImportDB db = new ImportDB(config, "./dump.txt");
         db.save(db.load());
     }
 }
