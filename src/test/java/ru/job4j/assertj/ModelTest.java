@@ -1,8 +1,10 @@
 package ru.job4j.assertj;
 
+import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.withPrecision;
 
 class ModelTest {
     @Test
@@ -35,5 +37,16 @@ class ModelTest {
                 .isGreaterThan(1)
                 .isLessThan(3)
                 .isEqualTo(2);
+    }
+
+    @Test
+    void checkDoubleChain() {
+        Model model = new Model(1, 5.255d, "name", true);
+        double result = model.getNum();
+        assertThat(result).isEqualTo(5.26d, withPrecision(0.006d))
+                .isCloseTo(5.25d, withPrecision(0.01d))
+                .isCloseTo(5.25d, Percentage.withPercentage(1.0d))
+                .isGreaterThan(5.25d)
+                .isLessThan(5.26d);
     }
 }
