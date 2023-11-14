@@ -55,14 +55,16 @@ create or replace function calculate_tax()
 $$
 BEGIN
     update products
-    set price = price + price * 0.2;
-    return null;
+    set price = price + price * 0.2
+    where id in(select id from inserted);
+    return new;
 END;
 $$
     LANGUAGE 'plpgsql';
 
 create trigger add_tax_trigger
     after insert on products
+    referencing new table as inserted
     for each statement
 execute function calculate_tax();
 
