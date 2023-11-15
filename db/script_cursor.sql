@@ -72,3 +72,6 @@ fetch from cursor_product;
 move absolute 1 from cursor_product;
 
 fetch from cursor_product;
+
+close cursor_product;
+commit;
