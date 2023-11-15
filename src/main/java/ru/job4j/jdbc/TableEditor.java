@@ -103,4 +103,5 @@ public class TableEditor implements AutoCloseable {
             System.out.println((getTableScheme(te.connection, tableTitle)));
         }
     }
+
 }
